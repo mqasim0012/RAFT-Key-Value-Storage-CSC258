@@ -5,7 +5,9 @@ Co-authors:
 
 How to run:
 *Make sure you have gradle installed
+
 $ ./gradlew build
+
 $ ./gradlew run --console=plain
 
 # Raft gRPC Implementation

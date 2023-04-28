@@ -1,0 +1,51 @@
+plugins {
+    id 'idea'
+    id 'java'
+    id 'com.google.protobuf' version '0.9.2'
+    id "com.github.ben-manes.versions" version "0.46.0"
+    id 'application'
+}
+
+mainClassName = "org.ur.raftimpl.RaftSystem"
+
+group 'org.ur'
+version '1.0-SNAPSHOT'
+
+repositories {
+    google()
+    mavenCentral()
+    maven { url = "https://jitpack.io" }
+}
+
+sourceCompatibility = 1.8
+
+dependencies {
+    implementation "io.grpc:grpc-netty-shaded:$grpc_version"
+    implementation "io.grpc:grpc-protobuf:$grpc_version"
+    implementation "io.grpc:grpc-stub:$grpc_version"
+    implementation "io.grpc:grpc-services:$grpc_version"
+
+    compileOnly "javax.annotation:javax.annotation-api:$annotation_version"
+
+    testImplementation "io.grpc:grpc-testing:$grpc_version"
+    testImplementation "junit:junit:$junit_version"
+}
+
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:$protoc_version"
+    }
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:$grpc_version"
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.plugins {
+                // Generate Java gRPC classes
+                grpc {}
+            }
+        }
+    }
+}

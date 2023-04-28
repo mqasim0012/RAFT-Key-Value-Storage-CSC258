@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.ur.comms";
+
+
+// make package name for easier grouping
+package comms;
+
+// The request message containing the user's name.
+message HelloRequest {
+  string text = 1;
+}
+
+// The response message containing the greetings
+message HelloResponse {
+  string text = 1;
+}
+
+// The Greeter service definition.
+service Greeter {
+  rpc SayHello (HelloRequest) returns (HelloResponse);
+
+  rpc SayHelloWithManyRequests (stream HelloRequest) returns (HelloResponse);
+
+  rpc SayHelloWithManyReplies (HelloRequest) returns (stream HelloResponse);
+
+  rpc SayHelloWithManyRequestsAndReplies (stream HelloRequest) returns (stream HelloResponse);
+
+  rpc RequestVote (HelloRequest) returns (HelloResponse);
+
+}

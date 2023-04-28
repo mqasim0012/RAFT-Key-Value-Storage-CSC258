@@ -1,0 +1,61 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "org.ur.comms";
+
+
+// make package name for easier grouping
+package comms;
+
+message VoteRequest {
+    // candidate id
+    int32 candidate_id = 1;
+    // current term of the sender
+    int32 term = 3;
+}
+
+message VoteResponse {
+    // respond with the newest term if leader term is out of date
+    int32 term = 1;
+    // vote granted or not
+    bool granted = 2;
+}
+
+message AppendEntriesRequest {
+    // sender id
+    int32 leader_id = 1;
+    // current term of the sender
+    int32 term = 2;
+    // leader's commit index commit or not
+    int32 commit = 3;
+    // last log index
+    string last_key = 4;
+    // last log entry
+    string last_value = 5;
+    // new log entry, none for heartbeat
+    string new_log_entry_key = 6;
+    // new log entry value, none for heartbeat
+    string new_log_entry_value = 7;
+
+}
+
+message AppendEntriesResponse {
+    // respond with the newest term if leader term is out of date
+    int32 term = 1;
+    // whether or not the append entry was successful
+    bool success = 2;
+}
+
+// service indicates server behavior
+service RaftServer {
+    // request vote function
+    rpc RequestVote (VoteRequest) returns (VoteResponse);
+
+    // append entries, which also serves as heartbeat
+    rpc AppendEntries (AppendEntriesRequest) returns (AppendEntriesResponse);
+
+    // TODO register client etc
+
+}
+
+
